@@ -1,0 +1,43 @@
+FROM       ubuntu:16.04
+
+ARG user="$USER"
+ARG pass="pass"
+
+# update
+RUN apt-get update && apt-get -y upgrade
+
+# set locale
+#RUN apt-get -y install locales
+#RUN locale-gen en_US.UTF-8
+#ENV LANG en_US.UTF-8
+#ENV LANGUAGE en_US:en
+#ENV LC_ALL en_US.UTF-8
+RUN apt-get -y install language-pack-ja-base language-pack-ja
+RUN locale-gen ja_JP.UTF-8
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:en
+ENV LC_ALL ja_JP.UTF-8
+
+# install ssh
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+
+# enable root login
+RUN echo 'root:root' | chpasswd
+RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# add new user
+RUN useradd -m $user -s /bin/bash && echo "$user:$pass" | chpasswd && gpasswd -a $user sudo
+RUN mkdir -p /home/$user/.ssh; chown $user /home/$user/.ssh; chmod 700 /home/$user/.ssh
+
+# add authorized_keys
+ADD $HOME/.ssh/id_rsa.pub /home/$user/.ssh/authorized_keys
+RUN chown $user /home/$user/.ssh/authorized_keys; chmod 600 /home/$user/.ssh/authorized_keys
+
+EXPOSE 22
+
+# install other commands
+RUN apt-get install -y sudo
+RUN apt-get install -y vim git
+
+CMD    ["/usr/sbin/sshd", "-D"]
