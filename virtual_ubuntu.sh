@@ -10,6 +10,25 @@ running_id=`docker ps -ql --filter ancestor=$image_name --filter status=running`
 
 
 #
+# check if docker installed
+#
+if type docker 2>/dev/null 1>/dev/null
+then
+	:
+else
+	echo "docker is not installed."
+	echo "To install docker, see https://docs.docker.com/engine/installation/"
+	echo "or run:"
+	echo ""
+	echo "    curl -fsSL get.docker.com -o get-docker.sh"
+	echo "    sudo sh get-docker.sh"
+	echo "    sudo usermod -aG docker \$USER"
+	echo ""
+	echo "and relogin. ($ su \$USER)"
+	exit
+fi
+
+#
 # functions
 #
 make_new_container(){
