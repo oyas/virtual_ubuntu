@@ -18,13 +18,7 @@ then
 else
 	echo "docker is not installed."
 	echo "To install docker, see https://docs.docker.com/engine/installation/"
-	echo "or run:"
-	echo ""
-	echo "    curl -fsSL get.docker.com -o get-docker.sh"
-	echo "    sudo sh get-docker.sh"
-	echo "    sudo usermod -aG docker \$USER"
-	echo ""
-	echo "and relogin. ($ su \$USER)"
+	echo "If using Ubuntu, see https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository"
 	exit
 fi
 
