@@ -7,8 +7,8 @@ Easy to make temporary Ubuntu environment by using docker.
 
 	$ ./virtual_ubuntu.sh
 
-Create new Ubuntu container or attach last used container.
-And login the container.
+This scripts create new Ubuntu container or run last used container,
+and login the container.
 
 ### Sub-commands
 
